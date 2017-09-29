@@ -1,17 +1,13 @@
 package com.example.enghaya.book_app;
 
 import android.content.Context;
-import android.database.DataSetObserver;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -97,6 +93,16 @@ public class MainActivity extends AppCompatActivity {
         String url = searchbooks + inputforuser;
 
         return url;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle out) {
+        super.onSaveInstanceState(out);
+        Book[] books = new Book[adapter.getCount()];
+        for (int i = 0; i < books.length; i++) {
+            books[i] = adapter.getItem(i);
+        }
+        out.putParcelableArray(search, books);
     }
 
     public class BooksAsyncTask extends AsyncTask<URL, Void, List<Book>> {
@@ -200,15 +206,5 @@ public class MainActivity extends AppCompatActivity {
             }
             return builder.toString();
         }
-
     }
-    @Override
-        public void onSaveInstanceState(Bundle out) {
-            super.onSaveInstanceState(out);
-            Book[] books = new Book[adapter.getCount()];
-            for (int i = 0; i < books.length; i++) {
-                books[i] = adapter.getItem(i);
-            }
-            out.putParcelableArray(search, (Parcelable[]) books);
-        }
     }
